@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Carta de Vinhos – DaSelva</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,700;1,400;1,700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #e4e3e0;
+    --ink: #000000;
+    --ink-mid: #878787;
+    --ink-faint: #d2d1d1;
+    --brand: #d18678;
+    --font-sans: 'Instrument Sans', Helvetica, Arial, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+    --font-display: 'Bodoni Moda', 'Georgia', serif;
+  }
+
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+
+  /* —— SUPER HEADER ———————————————————————————— */
+  .super-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    max-height: 33.3vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--ink);
+  }
+
+  /* top row: logo + EN button */
+  .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0 0;
+    flex-shrink: 0;
+  }
+
+  .brand-logo {
+    height: 32px;
+    width: auto;
+    display: block;
+  }
+
+  .brand-logo path, .brand-logo polygon, .brand-logo .st0 {
+    fill: var(--ink) !important;
+  }
+
+  .btn-lang {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border: 1px solid var(--ink-mid);
+    background: transparent;
+    color: var(--ink-mid);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+
+  .btn-lang:active {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+
+  /* title */
+  .mobile-title {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -.02em;
+    line-height: 1.1;
+    padding: 8px 0 6px;
+    flex-shrink: 0;
+  }
+
+  /* search */
+  .search-wrap {
+    position: relative;
+    flex-shrink: 0;
+    padding-bottom: 8px;
+  }
+
+  .search-wrap svg {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: .38;
+    pointer-events: none;
+  }
+
+  input[type="search"] {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--ink);
+    outline: none;
+    padding: 4px 0 4px 22px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--ink);
+    -webkit-appearance: none;
+  }
+
+  input[type="search"]::placeholder { color: var(--ink-mid); }
+  input[type="search"]::-webkit-search-cancel-button { display: none; }
+
+  /* filters horizontal scroll */
+  .filters-scroll {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 8px 0;
+    flex-shrink: 0;
+  }
+
+  .filters-scroll::-webkit-scrollbar { display: none; }
+
+  .filter-btn {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border: 1px solid var(--ink-mid);
+    background: transparent;
+    color: var(--ink-mid);
+    cursor: pointer;
+    transition: all .15s ease;
+    white-space: nowrap;
+    border-radius: 999px;
+    flex-shrink: 0;
+  }
+
+  .filter-btn:active {
+    opacity: .7;
+  }
+
+  .filter-btn.active {
+    background: var(--btn-color, var(--ink));
+    color: var(--bg);
+    border-color: var(--btn-color, var(--ink));
+  }
+
+  /* sort row */
+  .sort-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 8px;
+    flex-shrink: 0;
+  }
+
+  .sort-row .count-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-mid);
+  }
+
+  .sort-select {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 4px 24px 4px 10px;
+    border: 1px solid var(--ink-mid);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='8' height='5' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23878787' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+  }
+
+  /* —— ACCORDION CONTENT ————————————————————————— */
+  .accordion {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .cat-section {
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .cat-section:last-child {
+    border-bottom: none;
+  }
+
+  .cat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  .cat-header:active {
+    background: rgba(0,0,0,.03);
+  }
+
+  .cat-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .cat-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .cat-name {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    color: var(--ink);
+  }
+
+  .cat-count {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-mid);
+    margin-left: 6px;
+  }
+
+  .cat-chevron {
+    width: 12px;
+    height: 12px;
+    transition: transform .25s ease;
+    flex-shrink: 0;
+    color: var(--ink-mid);
+  }
+
+  .cat-section.open .cat-chevron {
+    transform: rotate(180deg);
+  }
+
+  .cat-items {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .35s ease;
+  }
+
+  .cat-section.open .cat-items {
+    max-height: 9999px;
+  }
+
+  /* —— WINE ITEM (mobile card) ———————————————— */
+  .wine-item {
+    padding: 16px 20px 20px;
+    border-top: 1px solid var(--ink);
+  }
+
+  .item-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+
+  .item-name {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    line-height: 1.2;
+    color: var(--ink);
+    flex: 1;
+  }
+
+  .item-price {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .item-origin {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-mid);
+    margin-bottom: 10px;
+  }
+
+  .item-desc {
+    font-size: 12px;
+    line-height: 1.6;
+    color: rgba(0,0,0,.65);
+    margin-bottom: 10px;
+  }
+
+  .item-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 12px;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: .04em;
+    padding: 2px 8px;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    text-transform: lowercase;
+    border-radius: 999px;
+  }
+
+  .item-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .bar-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ink);
+    width: 42px;
+    flex-shrink: 0;
+  }
+
+  .bar-track {
+    flex: 1;
+    height: 3px;
+    background: var(--ink-faint);
+  }
+
+  .bar-fill {
+    height: 100%;
+    transition: width .6s ease;
+  }
+
+  /* —— FOOTER ———————————————————————————————————— */
+  .mobile-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--ink);
+    text-align: center;
+  }
+
+  .mobile-footer p {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ink-mid);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    line-height: 1.8;
+  }
+
+  /* —— EMPTY STATE ——————————————————————————————— */
+  .empty-state {
+    padding: 48px 20px;
+    text-align: center;
+  }
+
+  .empty-state p {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-mid);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<div class="super-header">
+  <div class="header-row">
+    <svg class="brand-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 645.9" aria-label="DaSelva">
+      <defs><style>.st0{fill:#d18678;}</style></defs>
+      <g>
+        <path class="st0" d="M133.6,293H3.8v350.3h129.7c95.9,0,158-68.2,158-175.2s-60.6-175.2-158-175.2h.1ZM133.6,581.3h-63.1v-226.2h63.1c75.2,0,91.4,61.1,91.4,112.6s-12.1,113.6-91.4,113.6Z"/>
+        <path class="st0" d="M501.6,403c-20.2-21.2-48-33.3-79.8-33.3-67.6,0-123.7,58.6-123.7,135.8s56,135.3,123.7,135.3,59.6-12.1,79.8-33.3v27.8h63.6v-260h-63.6v27.8h0ZM431.9,579.2c-36.9,0-66.6-31.8-66.6-73.2s29.8-74.7,66.6-74.7,66.6,33.3,66.6,74.7-29.8,73.2-66.6,73.2Z"/>
+        <path class="st0" d="M730.5,422.2c-53.5-11.1-77.2-19.7-77.2-43.9s32.8-40.4,68.2-40.4,67.6,22.7,67.6,53h66.6c0-55.5-41.9-115.1-134.3-115.1s-134.8,41.9-134.8,102,65.6,94.4,130.2,107c64.6,12.6,82.8,26.2,82.8,48.5,0,33.3-39.9,47-78.2,47s-76.7-19.7-76.7-61.1h-66.6c0,84.3,74.7,122.2,143.4,122.2s144.9-42.4,144.9-110.1-52.5-92.4-135.8-109h-.1Z"/>
+        <path class="st0" d="M1852.9,375.2v27.8c-20.2-21.2-48-33.3-79.8-33.3-67.6,0-123.7,58.6-123.7,135.8s56,135.3,123.7,135.3,59.6-12.1,79.8-33.3v27.8h63.6v-260h-63.6ZM1783.3,579.2c-36.9,0-66.6-31.8-66.6-73.2s29.8-74.7,66.6-74.7,66.6,33.3,66.6,74.7-29.8,73.2-66.6,73.2Z"/>
+        <polygon class="st0" points="1603.1 376.8 1544.6 595.6 1526.9 595.6 1468.1 376.8 1401.2 376.8 1472 640.3 1600.3 640.3 1670 376.8 1603.1 376.8"/>
+        <path class="st0" d="M1082,544.4c-9.3,12.6-19.1,23.5-31.8,29.5-12.8,6-27.2,9.1-42.9,9.1s-28.8-3.3-40.1-9.7-20.1-15.5-26.2-27.1c-2.1-4-3.8-8.3-5.2-12.9h202.5l.4-8.7c.9-30.3-4.1-57.7-14.9-81.3-10.8-23.7-26.5-42.5-46.7-55.7s-43.6-19.9-69.7-19.9-48.1,6.3-69.2,18.7c-21,12.4-38,29.4-50.4,50.4-12.4,21.1-18.7,44.5-18.7,69.6s6.3,48.7,18.7,69.9,29.3,38.2,50.2,50.7c20.9,12.4,44.3,18.7,69.4,18.7s48.4-5.8,69.3-17.3c21-11.5,38-29.3,50.5-52.9l1.1-2-44.8-31.1-1.4,1.9h0ZM941,467.6c6.1-11.6,15-21,26.5-27.8,11.5-6.9,24.9-10.3,39.9-10.3s28.5,3.8,40.3,11.2c11.7,7.4,20.6,18.4,26.2,32.5,0,.3.3.7.4,1.2h-135.8c.8-2.6,1.7-5,2.6-6.8h-.1Z"/>
+      </g>
+      <path class="st0" d="M1405.3,272.4c2.4-108.1-31.9-262.6-115.5-267.7h-10.7c-83.6,5.1-117.8,159.7-115.5,267.7,1.7,76.4,30.4,199.3,74,264.7h0c-26.5,20.8-60.3,35.8-103.2,40.3v65.9c62-5.1,111.4-27,149.9-59.8,40.2,31.1,91.3,52,155,57.5v-65.9c-36.3-3.9-74.2-14.8-107.9-38.1,43.5-65.5,72.2-188.3,73.9-264.6h0ZM1282.6,68.6h3.9c17.5,2.7,57.5,84.1,54.9,202.4-1.4,62.3-24.7,163.9-56.8,220.3-32.2-56.4-55.5-158-56.8-220.3-2.6-118.3,37.3-199.7,54.9-202.4h0Z"/>
+    </svg>
+    <button class="btn-lang" id="btn-lang">EN</button>
+  </div>
+
+  <h1 class="mobile-title" id="mobile-title">Carta de Vinhos DaSelva.</h1>
+
+  <div class="search-wrap">
+    <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+      <circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.2"/>
+      <line x1="9.5" y1="9.5" x2="13" y2="13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+    </svg>
+    <input type="search" id="search" placeholder="Buscar vinho, uva, origem..." autocomplete="off">
+  </div>
+
+  <div class="filters-scroll" id="filters">
+    <button class="filter-btn active" data-filter="all">Todos</button>
+    <button class="filter-btn" data-filter="espumante" style="--btn-color:#4a7fb5">Espumante</button>
+    <button class="filter-btn" data-filter="branco" style="--btn-color:#c8920a">Branco</button>
+    <button class="filter-btn" data-filter="rose" style="--btn-color:#b5537e">Rosé</button>
+    <button class="filter-btn" data-filter="tinto" style="--btn-color:#6b1414">Tinto</button>
+  </div>
+
+  <div class="sort-row">
+    <span class="count-label" id="count-label">29 rótulos</span>
+    <select class="sort-select" id="sort">
+      <option value="default">Padrão</option>
+      <option value="az">A–Z</option>
+      <option value="za">Z–A</option>
+      <option value="preco-asc">Menor preço</option>
+      <option value="preco-desc">Maior preço</option>
+    </select>
+  </div>
+</div>
+
+<main class="accordion" id="accordion"></main>
+
+<div class="mobile-footer">
+  <p>DaSelva · Carta de Vinhos 2026</p>
+  <p>Preços sujeitos a alteração</p>
+</div>
+
+<script>
+const wines = [
+  { name: "Veuve Ambal Brut", origin: "Borgonha, França", price: "R$ 210", tipo: "espumante", catLabel: "Espumante", catLabelEn: "Sparkling", stripeColor: "#4a7fb5", desc: "Crémant de Bourgogne de método tradicional. Bolhas finas, frescor cítrico e brioche discreto.", descEn: "Traditional method Crémant de Bourgogne. Fine bubbles, citrus freshness and discreet brioche.", tags: ["espumante","cítrico","fresco","elegante"], tagsEn: ["sparkling","citrus","fresh","elegant"], bars: [["Acidez",4],["Corpo",2],["Doçura",1]], barsEn: [["Acidity",4],["Body",2],["Sweetness",1]] },
+  { name: "Ruggeri Ageo", origin: "Valdobbiadene, Itália", originEn: "Valdobbiadene, Italy", price: "R$ 210", tipo: "espumante", catLabel: "Espumante", catLabelEn: "Sparkling", stripeColor: "#4a7fb5", desc: "Prosecco Superiore de produtor clássico do Vêneto. Bolhas delicadas, pêssego, maçã verde e flor branca.", descEn: "Prosecco Superiore from a classic Veneto producer. Delicate bubbles, peach, green apple and white flower.", tags: ["espumante","floral","frutado","aromático"], tagsEn: ["sparkling","floral","fruity","aromatic"], bars: [["Acidez",3],["Corpo",1],["Doçura",2]], barsEn: [["Acidity",3],["Body",1],["Sweetness",2]] },
+  { name: "Flor Innata Verdejo", origin: "Rueda, Espanha", originEn: "Rueda, Spain", price: "R$ 235", tipo: "branco", catLabel: "Branco", catLabelEn: "White", stripeColor: "#c8920a", desc: "Verdejo da DO Rueda, casta aromática com erva-cidreira, maracujá e toque herbáceo.", descEn: "Verdejo from DO Rueda, aromatic variety with lemongrass, passion fruit and herbal touch.", tags: ["aromático","herbáceo","cítrico","tropical"], tagsEn: ["aromatic","herbal","citrus","tropical"], bars: [["Acidez",4],["Corpo",2],["Doçura",1]], barsEn: [["Acidity",4],["Body",2],["Sweetness",1]] },
+  { name: "Fantini Trebbiano", origin: "Abruzzo, Itália", originEn: "Abruzzo, Italy", price: "R$ 245", tipo: "branco", catLabel: "Branco", catLabelEn: "White", stripeColor: "#c8920a", desc: "Branco leve e simples do sul italiano. Maçã, limão e amêndoa. Fresco, sem madeira.", descEn: "Light and simple white from southern Italy. Apple, lemon and almond. Fresh, unoaked.", tags: ["leve","cítrico","fresco","sem madeira"], tagsEn: ["light","citrus","fresh","unoaked"], bars: [["Acidez",4],["Corpo",1],["Doçura",1]], barsEn: [["Acidity",4],["Body",1],["Sweetness",1]] },
+  { name: "Sophenia Alto Sur Sauv. Blanc", origin: "Mendoza, Argentina", price: "R$ 235", tipo: "branco", catLabel: "Branco", catLabelEn: "White", stripeColor: "#c8920a", desc: "Sauvignon Blanc de alta altitude de Mendoza. Maracujá, capim-limão e mineralidade.", descEn: "High-altitude Sauvignon Blanc from Mendoza. Passion fruit, lemongrass and minerality.", tags: ["tropical","herbáceo","frescor","novo mundo"], tagsEn: ["tropical","herbal","fresh","new world"], bars: [["Acidez",4],["Corpo",2],["Doçura",1]], barsEn: [["Acidity",4],["Body",2],["Sweetness",1]] },
+  { name: "La Vieille Ferme Blanc", origin: "Rhône, França", originEn: "Rhône, France", price: "R$ 265", tipo: "branco", catLabel: "Branco", catLabelEn: "White", stripeColor: "#c8920a", desc: "Blend Grenache Blanc, Bourboulenc e Roussanne. Mel de flores, pêssego e leve especiaria.", descEn: "Grenache Blanc, Bourboulenc and Roussanne blend. Flower honey, peach and light spice.", tags: ["floral","texturoso","pêssego","mediterrâneo"], tagsEn: ["floral","textured","peach","mediterranean"], bars: [["Acidez",3],["Corpo",3],["Doçura",2]], barsEn: [["Acidity",3],["Body",3],["Sweetness",2]] },
+  { name: "Luis Pato Maria Gomes", origin: "Bairrada, Portugal", price: "R$ 278", tipo: "branco", catLabel: "Branco", catLabelEn: "White", stripeColor: "#c8920a", desc: "Casta Maria Gomes (Fernão Pires) do maestro Luís Pato. Floral intenso, maçã, anis e frescor marcante.", descEn: "Maria Gomes (Fernão Pires) grape by maestro Luís Pato. Intense floral, apple, anise and striking freshness.", tags: ["floral","aromático","frescor","singular"], tagsEn: ["floral","aromatic","fresh","singular"], bars: [["Acidez",4],["Corpo",2],["Doçura",2]], barsEn: [["Acidity",4],["Body",2],["Sweetness",2]] },
+  { name: "Casa Marin Lo Abarca", origin: "San Antonio, Chile", price: "R$ 287", tipo: "branco", catLabel: "Branco", catLabelEn: "White", stripeColor: "#c8920a", desc: "Branco de San Antonio, Costa Pacífico. Clima frio, acidez vivaz, aromas florais e mineralidade salina.", descEn: "White from San Antonio, Pacific Coast. Cool climate, lively acidity, floral aromas and saline minerality.", tags: ["mineral","floral","frescor","costa pacífico"], tagsEn: ["mineral","floral","fresh","pacific coast"], bars: [["Acidez",5],["Corpo",2],["Doçura",1]], barsEn: [["Acidity",5],["Body",2],["Sweetness",1]] },
+  { name: "Valontano LZ Nature", origin: "Portugal", price: "R$ 295", tipo: "branco", catLabel: "Branco", catLabelEn: "White", stripeColor: "#c8920a", desc: "Vinho natural português, possivelmente com maceração. Textura diferente, leve turvação, notas de mel e ervas.", descEn: "Portuguese natural wine, possibly with maceration. Different texture, slight haze, honey and herb notes.", tags: ["natural","âmbar","texturoso","alternativo"], tagsEn: ["natural","amber","textured","alternative"], bars: [["Acidez",3],["Corpo",3],["Doçura",1]], barsEn: [["Acidity",3],["Body",3],["Sweetness",1]] },
+  { name: "Sileno Straits Sauv. Blanc", origin: "África do Sul", originEn: "South Africa", price: "R$ 378", tipo: "branco", catLabel: "Branco", catLabelEn: "White", stripeColor: "#c8920a", desc: "Sauvignon Blanc sul-africano de região costeira. Maracujá, groselha, toque mineral.", descEn: "South African Sauvignon Blanc from coastal region. Passion fruit, gooseberry, mineral touch.", tags: ["tropical","mineral","aromático","frescor"], tagsEn: ["tropical","mineral","aromatic","fresh"], bars: [["Acidez",4],["Corpo",2],["Doçura",1]], barsEn: [["Acidity",4],["Body",2],["Sweetness",1]] },
+  { name: "Alt Mora Etna Bianco", origin: "Etna, Sicília, Itália", originEn: "Etna, Sicily, Italy", price: "R$ 375", tipo: "branco", catLabel: "Branco", catLabelEn: "White", stripeColor: "#c8920a", desc: "Carricante das encostas vulcânicas do Etna. Mineral, salino, cítrico e com acidez vibrante.", descEn: "Carricante from Etna's volcanic slopes. Mineral, saline, citric with vibrant acidity.", tags: ["vulcânico","mineral","salino","único"], tagsEn: ["volcanic","mineral","saline","unique"], bars: [["Acidez",5],["Corpo",2],["Doçura",1]], barsEn: [["Acidity",5],["Body",2],["Sweetness",1]] },
+  { name: "El Enemigo Chardonnay", origin: "Mendoza, Argentina", price: "R$ 387", tipo: "branco", catLabel: "Branco", catLabelEn: "White", stripeColor: "#c8920a", desc: "Chardonnay de Adrianna Catena Zapata. Elegante equilíbrio entre fruta e madeira sutil.", descEn: "Chardonnay by Adrianna Catena Zapata. Elegant balance between fruit and subtle oak.", tags: ["cremoso","elegante","barrica sutil","premium"], tagsEn: ["creamy","elegant","subtle oak","premium"], bars: [["Acidez",3],["Corpo",3],["Doçura",1]], barsEn: [["Acidity",3],["Body",3],["Sweetness",1]] },
+  { name: "André Goitch Chardonnay", origin: "Mendoza, Argentina", price: "R$ 438", tipo: "branco", catLabel: "Branco", catLabelEn: "White", stripeColor: "#c8920a", desc: "Chardonnay de estilo borgonhês em Mendoza. Manteiga, baunilha e fruta amarela madura.", descEn: "Burgundian-style Chardonnay from Mendoza. Butter, vanilla and ripe yellow fruit.", tags: ["manteiga","baunilha","médio corpo","barrica"], tagsEn: ["butter","vanilla","medium body","oak"], bars: [["Acidez",3],["Corpo",4],["Doçura",2]], barsEn: [["Acidity",3],["Body",4],["Sweetness",2]] },
+  { name: "Amayna Chardonnay", origin: "Leyda, Chile", price: "R$ 450", tipo: "branco", catLabel: "Branco", catLabelEn: "White", stripeColor: "#c8920a", desc: "Chardonnay de clima frio do Vale de Leyda. Nectarina, limão siciliano e mineralidade salina.", descEn: "Cool-climate Chardonnay from Leyda Valley. Nectarine, Sicilian lemon and saline minerality.", tags: ["mineral","fruta amarela","elegante","clima frio"], tagsEn: ["mineral","yellow fruit","elegant","cool climate"], bars: [["Acidez",4],["Corpo",3],["Doçura",1]], barsEn: [["Acidity",4],["Body",3],["Sweetness",1]] },
+  { name: "Vitrea Andres", origin: "Portugal", price: "R$ 110", tipo: "branco", catLabel: "Branco", catLabelEn: "White", stripeColor: "#c8920a", desc: "Branco português de entrada, jovem e fresco. Perfil frutado e acessível, com boa acidez e final limpo.", descEn: "Entry-level Portuguese white, young and fresh. Fruity and accessible profile with good acidity.", tags: ["frutado","fresco","acessível","jovem"], tagsEn: ["fruity","fresh","accessible","young"], bars: [["Acidez",3],["Corpo",1],["Doçura",2]], barsEn: [["Acidity",3],["Body",1],["Sweetness",2]] },
+  { name: "Maison Mirabeau X Coteaux", origin: "Provence, França", originEn: "Provence, France", price: "R$ 269", tipo: "rose", catLabel: "Rosé", catLabelEn: "Rosé", stripeColor: "#b5537e", desc: "Rosé de Provence de baixa extração. Cor pálida, framboesa, pepino e flor. Seco, leve e refrescante.", descEn: "Low-extraction Provence rosé. Pale color, raspberry, cucumber and flower. Dry, light and refreshing.", tags: ["delicado","floral","seco","provence"], tagsEn: ["delicate","floral","dry","provence"], bars: [["Acidez",3],["Corpo",1],["Doçura",1]], barsEn: [["Acidity",3],["Body",1],["Sweetness",1]] },
+  { name: "Costal N1 Pinot Noir", origin: "Chile (Costa Pacífico)", originEn: "Chile (Pacific Coast)", price: "R$ 197", tipo: "tinto", catLabel: "Tinto", catLabelEn: "Red", stripeColor: "#6b1414", desc: "Pinot Noir de região costeira fria do Chile. Morango, cereja, violeta e toque herbal. Leve, ágil e fácil de beber.", descEn: "Pinot Noir from Chile's cool coastal region. Strawberry, cherry, violet and herbal touch. Light, agile, easy drinking.", tags: ["leve","frutado","floral","fácil"], tagsEn: ["light","fruity","floral","easy"], bars: [["Corpo",2],["Tanino",1],["Acidez",4]], barsEn: [["Body",2],["Tannin",1],["Acidity",4]] },
+  { name: "Rendez Vous Pinot Noir", origin: "Nova Zelândia", originEn: "New Zealand", price: "R$ 225", tipo: "tinto", catLabel: "Tinto", catLabelEn: "Red", stripeColor: "#6b1414", desc: "Pinot Noir da Nova Zelândia. Cereja vermelha, rosa, toque de terra e especiaria suave.", descEn: "New Zealand Pinot Noir. Red cherry, rose, earthy touch and soft spice.", tags: ["cereja","floral","especiado","elegante"], tagsEn: ["cherry","floral","spiced","elegant"], bars: [["Corpo",2],["Tanino",2],["Acidez",4]], barsEn: [["Body",2],["Tannin",2],["Acidity",4]] },
+  { name: "Macchiore e Barraud Cabernet", origin: "Sul da França", originEn: "South of France", price: "R$ 224", tipo: "tinto", catLabel: "Tinto", catLabelEn: "Red", stripeColor: "#6b1414", desc: "Cabernet de entrada, provavelmente do Languedoc. Ameixa, groselha e páprica suave.", descEn: "Entry Cabernet, likely from Languedoc. Plum, gooseberry and mild paprika.", tags: ["frutado","macio","acessível","sem madeira"], tagsEn: ["fruity","soft","accessible","unoaked"], bars: [["Corpo",2],["Tanino",2],["Acidez",3]], barsEn: [["Body",2],["Tannin",2],["Acidity",3]] },
+  { name: "Mariana Tinto", origin: "Alentejo, Portugal", price: "R$ 225", tipo: "tinto", catLabel: "Tinto", catLabelEn: "Red", stripeColor: "#6b1414", desc: "Tinto alentejano acessível. Frutas vermelhas, especiaria e toque de terra ibérica.", descEn: "Accessible Alentejo red. Red fruits, spice and Iberian earthy touch.", tags: ["frutado","especiado","suave","portugal"], tagsEn: ["fruity","spiced","soft","portugal"], bars: [["Corpo",2],["Tanino",2],["Acidez",3]], barsEn: [["Body",2],["Tannin",2],["Acidity",3]] },
+  { name: "Rocim Mariana", origin: "Alentejo, Portugal", price: "R$ 225", tipo: "tinto", catLabel: "Tinto", catLabelEn: "Red", stripeColor: "#6b1414", desc: "Herdade do Rocim, referência no Alentejo. Versão jovem e frutada com castas autóctones.", descEn: "Herdade do Rocim, Alentejo benchmark. Young, fruity version with indigenous varieties.", tags: ["ameixa","mora","castas portuguesas","identidade"], tagsEn: ["plum","blackberry","portuguese grapes","identity"], bars: [["Corpo",2],["Tanino",2],["Acidez",3]], barsEn: [["Body",2],["Tannin",2],["Acidity",3]] },
+  { name: "Fantini Montepulciano", origin: "Abruzzo, Itália", originEn: "Abruzzo, Italy", price: "R$ 243", tipo: "tinto", catLabel: "Tinto", catLabelEn: "Red", stripeColor: "#6b1414", desc: "Montepulciano d'Abruzzo. Cereja preta, erva seca e toque rústico mediterrâneo.", descEn: "Montepulciano d'Abruzzo. Black cherry, dried herb and rustic Mediterranean touch.", tags: ["cereja preta","mediterrâneo","rústico","custo-benefício"], tagsEn: ["black cherry","mediterranean","rustic","value"], bars: [["Corpo",3],["Tanino",3],["Acidez",4]], barsEn: [["Body",3],["Tannin",3],["Acidity",4]] },
+  { name: "Vinanco Crianza", origin: "Rioja, Espanha", originEn: "Rioja, Spain", price: "R$ 292", tipo: "tinto", catLabel: "Tinto", catLabelEn: "Red", stripeColor: "#6b1414", desc: "Rioja Crianza com mínimo 12 meses em carvalho americano. Tempranillo de baunilha, coco, framboesa.", descEn: "Rioja Crianza with minimum 12 months in American oak. Tempranillo with vanilla, coconut, raspberry.", tags: ["baunilha","especiado","carvalho","rioja"], tagsEn: ["vanilla","spiced","oak","rioja"], bars: [["Corpo",3],["Tanino",3],["Acidez",3]], barsEn: [["Body",3],["Tannin",3],["Acidity",3]] },
+  { name: "Lapostole Apalta", origin: "Colchagua, Chile", price: "R$ 370", tipo: "tinto", catLabel: "Tinto", catLabelEn: "Red", stripeColor: "#6b1414", desc: "Blend de estilo bordalês do icônico Apalta. Ameixa, cacau, cedro e toque floral. Estruturado e elegante.", descEn: "Bordeaux-style blend from iconic Apalta. Plum, cocoa, cedar and floral touch. Structured and elegant.", tags: ["cedro","cacau","carménère","estruturado"], tagsEn: ["cedar","cocoa","carménère","structured"], bars: [["Corpo",4],["Tanino",4],["Acidez",3]], barsEn: [["Body",4],["Tannin",4],["Acidity",3]] },
+  { name: "El Enemigo Malbec", origin: "Mendoza, Argentina", price: "R$ 395", tipo: "tinto", catLabel: "Tinto", catLabelEn: "Red", stripeColor: "#6b1414", desc: "Malbec assinado por Adrianna Catena. Violeta, amora, cacau e especiaria. Encorpado e com taninos sedosos.", descEn: "Malbec by Adrianna Catena. Violet, blackberry, cocoa and spice. Full-bodied with silky tannins.", tags: ["violeta","amora","sedoso","novo mundo"], tagsEn: ["violet","blackberry","silky","new world"], bars: [["Corpo",4],["Tanino",3],["Acidez",3]], barsEn: [["Body",4],["Tannin",3],["Acidity",3]] },
+  { name: "Jacopo Biondi Santi Braccale", origin: "Toscana, Itália", originEn: "Tuscany, Italy", price: "R$ 390", tipo: "tinto", catLabel: "Tinto", catLabelEn: "Red", stripeColor: "#6b1414", desc: "Vinho da família lendária do Brunello. DNA nobre: cereja seca, terra, erva. Taninos firmes.", descEn: "Wine from the legendary Brunello family. Noble DNA: dried cherry, earth, herb. Firm tannins.", tags: ["cereja seca","terra","tanino firme","biondi santi"], tagsEn: ["dried cherry","earth","firm tannin","biondi santi"], bars: [["Corpo",3],["Tanino",4],["Acidez",5]], barsEn: [["Body",3],["Tannin",4],["Acidity",5]] },
+  { name: "Talenti Rosso di Montalcino", origin: "Montalcino, Itália", originEn: "Montalcino, Italy", price: "R$ 360", tipo: "tinto", catLabel: "Tinto", catLabelEn: "Red", stripeColor: "#6b1414", desc: "Sangiovese grosso de Montalcino — irmão menor do Brunello. Cereja, flor seca, erva, terra.", descEn: "Sangiovese Grosso from Montalcino — Brunello's younger sibling. Cherry, dried flower, herb, earth.", tags: ["cereja","flor seca","alta acidez","persistente"], tagsEn: ["cherry","dried flower","high acidity","persistent"], bars: [["Corpo",4],["Tanino",4],["Acidez",5]], barsEn: [["Body",4],["Tannin",4],["Acidity",5]] },
+  { name: "Sassoalloro", origin: "Toscana, Itália", originEn: "Tuscany, Italy", price: "R$ 668", tipo: "tinto", catLabel: "Tinto", catLabelEn: "Red", stripeColor: "#6b1414", desc: "IGT toscano da família Biondi Santi. Sangiovese puro. Cereja, tabaco, couro e mineral. Final interminável.", descEn: "Tuscan IGT by Biondi Santi family. Pure Sangiovese. Cherry, tobacco, leather and mineral. Endless finish.", tags: ["complexo","tabaco","tanino nobre","longa guarda"], tagsEn: ["complex","tobacco","noble tannin","long aging"], bars: [["Corpo",5],["Tanino",5],["Acidez",5]], barsEn: [["Body",5],["Tannin",5],["Acidity",5]] },
+];
+
+const categories = [
+  { tipo: 'espumante', label: 'Espumantes', labelEn: 'Sparkling Wines', color: '#4a7fb5' },
+  { tipo: 'branco', label: 'Brancos', labelEn: 'White Wines', color: '#c8920a' },
+  { tipo: 'rose', label: 'Rosé', labelEn: 'Rosé', color: '#b5537e' },
+  { tipo: 'tinto', label: 'Tintos', labelEn: 'Red Wines', color: '#6b1414' },
+];
+
+const accordion = document.getElementById('accordion');
+const searchInput = document.getElementById('search');
+const filterBtns = document.querySelectorAll('.filter-btn');
+const sortSelect = document.getElementById('sort');
+const countLabel = document.getElementById('count-label');
+const btnLang = document.getElementById('btn-lang');
+const mobileTitle = document.getElementById('mobile-title');
+
+let activeFilter = 'all';
+let searchTerm = '';
+let activeSort = 'default';
+let lang = 'pt';
+let openSections = new Set();
+
+function parsePrice(p) {
+  return parseInt(p.replace(/[^\d]/g, ''), 10);
+}
+
+function normalize(str) {
+  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+function matches(w) {
+  const filterOk = activeFilter === 'all' || w.tipo === activeFilter;
+  if (!filterOk) return false;
+  if (!searchTerm) return true;
+  const q = normalize(searchTerm);
+  const haystack = normalize([w.name, w.origin, w.originEn || '', w.catLabel, ...w.tags, ...(w.tagsEn || []), w.desc, w.descEn || ''].join(' '));
+  return haystack.includes(q);
+}
+
+function sortWines(list) {
+  const arr = [...list];
+  switch (activeSort) {
+    case 'az': arr.sort((a, b) => a.name.localeCompare(b.name, 'pt')); break;
+    case 'za': arr.sort((a, b) => b.name.localeCompare(a.name, 'pt')); break;
+    case 'preco-asc': arr.sort((a, b) => parsePrice(a.price) - parsePrice(b.price)); break;
+    case 'preco-desc': arr.sort((a, b) => parsePrice(b.price) - parsePrice(a.price)); break;
+  }
+  return arr;
+}
+
+function renderBars(bars, color) {
+  return bars.map(([label, val]) => `
+    <div class="bar-row">
+      <span class="bar-label">${label}</span>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:${val * 20}%; background:${color}"></div>
+      </div>
+    </div>`).join('');
+}
+
+function renderItem(w) {
+  const isEn = lang === 'en';
+  const origin = isEn ? (w.originEn || w.origin) : w.origin;
+  const desc = isEn ? (w.descEn || w.desc) : w.desc;
+  const tags = isEn ? (w.tagsEn || w.tags) : w.tags;
+  const bars = isEn ? (w.barsEn || w.bars) : w.bars;
+
+  return `
+    <div class="wine-item">
+      <div class="item-top">
+        <h3 class="item-name">${w.name}</h3>
+        <span class="item-price">${w.price}</span>
+      </div>
+      <div class="item-origin">${origin}</div>
+      <p class="item-desc">${desc}</p>
+      <div class="item-tags">${tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+      <div class="item-bars">${renderBars(bars, w.stripeColor)}</div>
+    </div>`;
+}
+
+function render() {
+  const visible = sortWines(wines.filter(matches));
+  const isEn = lang === 'en';
+  countLabel.textContent = `${visible.length} ${isEn ? 'wine' : 'rótulo'}${visible.length !== 1 ? 's' : ''}`;
+
+  if (visible.length === 0) {
+    accordion.innerHTML = `<div class="empty-state"><p>${isEn ? 'No wines found' : 'Nenhum vinho encontrado'}</p></div>`;
+    return;
+  }
+
+  const catsToShow = activeFilter === 'all'
+    ? categories
+    : categories.filter(c => c.tipo === activeFilter);
+
+  let html = '';
+
+  catsToShow.forEach(cat => {
+    const catWines = visible.filter(w => w.tipo === cat.tipo);
+    if (catWines.length === 0) return;
+
+    const isOpen = openSections.has(cat.tipo);
+    const catName = isEn ? cat.labelEn : cat.label;
+
+    html += `
+      <div class="cat-section${isOpen ? ' open' : ''}" data-tipo="${cat.tipo}">
+        <div class="cat-header" data-tipo="${cat.tipo}">
+          <div class="cat-header-left">
+            <span class="cat-dot" style="background:${cat.color}"></span>
+            <span class="cat-name">${catName}</span>
+            <span class="cat-count">${catWines.length}</span>
+          </div>
+          <svg class="cat-chevron" viewBox="0 0 12 12" fill="none">
+            <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="cat-items">
+          ${catWines.map(renderItem).join('')}
+        </div>
+      </div>`;
+  });
+
+  accordion.innerHTML = html;
+
+  document.querySelectorAll('.cat-header').forEach(hdr => {
+    hdr.addEventListener('click', () => {
+      const tipo = hdr.dataset.tipo;
+      const section = hdr.closest('.cat-section');
+      if (openSections.has(tipo)) {
+        openSections.delete(tipo);
+        section.classList.remove('open');
+      } else {
+        openSections.add(tipo);
+        section.classList.add('open');
+      }
+    });
+  });
+}
+
+searchInput.addEventListener('input', e => {
+  searchTerm = e.target.value.trim();
+  if (searchTerm) {
+    openSections = new Set(categories.map(c => c.tipo));
+  }
+  render();
+});
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    if (activeFilter !== 'all') {
+      openSections.add(activeFilter);
+    }
+    render();
+  });
+});
+
+sortSelect.addEventListener('change', e => {
+  activeSort = e.target.value;
+  render();
+});
+
+btnLang.addEventListener('click', () => {
+  lang = lang === 'pt' ? 'en' : 'pt';
+  btnLang.textContent = lang === 'pt' ? 'EN' : 'PT';
+  mobileTitle.textContent = lang === 'pt' ? 'Carta de Vinhos DaSelva.' : 'Wine List DaSelva.';
+  searchInput.placeholder = lang === 'pt' ? 'Buscar vinho, uva, origem...' : 'Search wine, grape, origin...';
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
